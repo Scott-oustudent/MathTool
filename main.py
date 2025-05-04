@@ -1,34 +1,46 @@
-from mult import mult_game
-from divi import division_game
-from subtraction import subtraction_game
-from addi import addition_game
+import tkinter as tk
+from mult import mult_game_ui  # Updated to use the correct function name
+from divi import division_game_ui  # Updated to use the correct function name
+from subtraction import subtraction_game_ui  # Updated to use the correct function name
+from addi import addition_game_ui  # Correct function name
 
-def main():
-    print("Welcome to the Math Quiz Program!")
-    student_name = input("Enter your name: ")
+def start_game(game_function, student_name):
+    game_function(student_name)
 
-    while True:
-        print("\nChoose a game:")
-        print("1. Multiplication")
-        print("2. Division")
-        print("3. Subtraction")
-        print("4. Addition")
-        print("5. Exit")
+def main_ui():
+    root = tk.Tk()
+    root.title("Math Quiz Program")
 
-        choice = input("Enter the number of your choice (1-5): ")
-        if choice == "1":
-            mult_game(student_name)
-        elif choice == "2":
-            division_game(student_name)
-        elif choice == "3":
-            subtraction_game(student_name)
-        elif choice == "4":
-            addition_game(student_name)
-        elif choice == "5":
-            print("Thank you for playing! Goodbye!")
-            break
+    tk.Label(root, text="Welcome to the Math Quiz Program!", font=("Arial", 14)).pack(pady=10)
+    
+    tk.Label(root, text="Enter your name:").pack()
+    name_entry = tk.Entry(root)
+    name_entry.pack()
+
+    def on_choice(choice):
+        student_name = name_entry.get()
+        if student_name.strip():
+            if choice == 1:
+                start_game(mult_game_ui, student_name)  # Updated to use mult_game_ui
+            elif choice == 2:
+                start_game(division_game_ui, student_name)  # Updated to use division_game_ui
+            elif choice == 3:
+                start_game(subtraction_game_ui, student_name)  # Updated to use subtraction_game_ui
+            elif choice == 4:
+                start_game(addition_game_ui, student_name)  # Correct function name
+            elif choice == 5:
+                root.destroy()  # Properly closes the program
         else:
-            print("Invalid choice. Please enter a number between 1 and 5.")
+            tk.Label(root, text="Please enter your name before selecting a game.", fg="red").pack()
+
+    tk.Label(root, text="\nChoose a game:").pack()
+    tk.Button(root, text="Multiplication", command=lambda: on_choice(1)).pack()
+    tk.Button(root, text="Division", command=lambda: on_choice(2)).pack()
+    tk.Button(root, text="Subtraction", command=lambda: on_choice(3)).pack()
+    tk.Button(root, text="Addition", command=lambda: on_choice(4)).pack()
+    tk.Button(root, text="Exit", command=lambda: on_choice(5)).pack()
+
+    root.mainloop()
 
 if __name__ == "__main__":
-    main()
+    main_ui()
